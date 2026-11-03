@@ -31,14 +31,7 @@ def predict_default_probability(features, borrower_type="individual", model_type
             features_array = np.array(features).reshape(1, -1)  # Reshape to 2D array
             return business_xgboost_model.predict_proba(features_array)[0][1]
         
-def recommend_loan(default_probability, borrower_type="individual", lender_goal="profit_maximization"):
-    thresholds = {
-        "individual": {"profit_maximization": 0.41, "risk_minimization": 0.21, "market_expansion": 0.5},
-        "business": {"profit_maximization": 0.35, "risk_minimization": 0.15, "market_expansion": 0.45},
-    }
-    print(thresholds[borrower_type].get(lender_goal, 0.5))
-    threshold = thresholds[borrower_type].get(lender_goal, 0.5)
-    return "Approve" if default_probability < threshold else "Deny"
+from .decision import recommend_loan
 
 def handle_dataset_individuals(data):
     
